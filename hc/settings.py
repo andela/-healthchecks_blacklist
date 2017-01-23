@@ -92,35 +92,6 @@ ALLOWED_HOSTS = ['*']
 
 DEBUG = True
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME':   './hc.sqlite',
-#     }
-# }
-#
-# # You can switch database engine to postgres or mysql using environment
-# # variable 'DB'. Travis CI does this.
-# if os.environ.get("DB") == "postgres":
-#     DATABASES = {
-#         'default': {
-#             'ENGINE':   'django.db.backends.postgresql',
-#             'NAME':     'hc',
-#             'USER':     'postgres',
-#             'TEST': {'CHARSET': 'UTF8'}
-#         }
-#     }
-#
-# if os.environ.get("DB") == "mysql":
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'USER':     'root',
-#             'NAME':     'hc',
-#             'TEST': {'CHARSET': 'UTF8'}
-#         }
-#     }
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
