@@ -9,7 +9,3 @@ dependencies:
 test:
   pre:
     - ./manage.py collectstatic --no-input
-
-script:
-  - coverage run --omit=*/tests/* --source=hc manage.py test
-after_success: coveralls
