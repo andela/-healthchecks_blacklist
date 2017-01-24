@@ -12,8 +12,9 @@ lxml==3.7.2
 mock==2.0.0
 pbr==1.10.0
 premailer==2.9.6
-psycopg2==2.6.1
 rcssmin==1.0.6
 requests==2.9.1
 rjsmin==1.0.12
 six==1.10.0
+whitenoise==3.2.3
+psycopg2==2.6.1
