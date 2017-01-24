@@ -1,6 +1,6 @@
 # healthchecks
 
-[![Coverage Status](https://coveralls.io/repos/github/andela/-healthchecks_blacklist/badge.svg?branch=ch-configure-coveralls-137858619)](https://coveralls.io/github/andela/-healthchecks_blacklist?branch=ch-configure-coveralls-137858619)  [![CircleCI](https://circleci.com/gh/andela/-healthchecks_blacklist/tree/master.svg?style=svg)](https://circleci.com/gh/andela/-healthchecks_blacklist/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/andela/-healthchecks_blacklist/badge.svg?branch=master)](https://coveralls.io/github/andela/-healthchecks_blacklist?branch=cmaster)  [![CircleCI](https://circleci.com/gh/andela/-healthchecks_blacklist/tree/master.svg?style=svg)](https://circleci.com/gh/andela/-healthchecks_blacklist/tree/master)
 
 ![Screenshot of Welcome page](/stuff/screenshots/welcome.png?raw=true "Welcome Page")
 
