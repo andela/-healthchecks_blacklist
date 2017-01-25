@@ -9,5 +9,3 @@ dependencies:
 test:
   pre:
     - ./manage.py collectstatic --no-input
-  post:
-    - coveralls
