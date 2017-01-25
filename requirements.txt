@@ -21,3 +21,5 @@ whitenoise==3.2.3
 psycopg2==2.6.1
 dj-database-url==0.4.2
 gunicorn==19.6.0
+python-coveralls==2.9.0
+coveralls==1.1
