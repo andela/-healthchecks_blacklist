@@ -1,0 +1,5 @@
+repo_token: ez5UhnwU1SRUFs5IPjuxBJn53PUxdfJ3u
+
+notify:
+  webhooks:
+    - url: https://coveralls.io/webhook?repo_token=(ez5UhnwU1SRUFs5IPjuxBJn53PUxdfJ3u)
