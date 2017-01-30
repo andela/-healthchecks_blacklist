@@ -14,17 +14,25 @@ class LoginTestCase(TestCase):
         session["welcome_code"] = str(check.code)
         session.save()
 
+        # user count before
+        self.user_count_before = User.objects.count()
+
         form = {"email": "alice@example.org"}
 
         r = self.client.post("/accounts/login/", form)
         assert r.status_code == 302
 
+        # user count after
+        self.user_count_after = User.objects.count()
+
         ### Assert that a user was created
+
+        # check if increase by 1
+        self.assertEqual(self.user_count_before + 1, self.user_count_after)
 
         # And email sent
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Log in to healthchecks.io')
-        ### Assert contents of the email body
         self.assertIn(
             mail.outbox[0].body, "To log into healthchecks.io, please open the link below:")
 
