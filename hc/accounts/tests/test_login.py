@@ -34,7 +34,8 @@ class LoginTestCase(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Log in to healthchecks.io')
         self.assertIn(
-            mail.outbox[0].body, "To log into healthchecks.io, please open the link below:")
+            "To log into healthchecks.io, please open the link below:",
+            mail.outbox[0].body)
 
         ### Assert that check is associated with the new user
 
@@ -44,4 +45,3 @@ class LoginTestCase(TestCase):
         assert "bad_link" not in self.client.session
 
         ### Any other tests?
-
