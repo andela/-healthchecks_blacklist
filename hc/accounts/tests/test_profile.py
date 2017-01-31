@@ -21,13 +21,17 @@ class ProfileTestCase(BaseTestCase):
         self.assertNotEqual(token, None)
 
         ### Assert that the email was sent and check email content
+        self.assertIn("Here's a link to set a password for your account on healthchecks.io:",
+                      mail.outbox[-1].body)
         self.assertRedirects(r, "/accounts/set_password_link_sent/")
+        
+
 
     def test_it_sends_report(self):
         check = Check(name="Test Check", user=self.alice)
         check.save()
         self.alice.profile.send_report()
-        ###Assert that the email was sent and check email content
+        # Assert that the email was sent and check email content
         self.assertIn("This is a monthly report sent by healthchecks.io.", \
                       mail.outbox[-1].body)
 
@@ -43,11 +47,11 @@ class ProfileTestCase(BaseTestCase):
         for member in self.alice.profile.member_set.all():
             member_emails.add(member.user.email)
 
-        ### Assert the existence of the member emails
+        # Assert the existence of the member emails
 
         self.assertTrue("frank@example.org" in member_emails)
 
-        ###Assert that the email was sent and check email content
+        # Assert that the email was sent and check email content
         self.assertIn("invites you to their", \
                       mail.outbox[-1].body)
 
@@ -112,7 +116,8 @@ class ProfileTestCase(BaseTestCase):
         # Expect only Alice's tags
         self.assertNotContains(r, "bobs-tag.svg")
 
-    ### Test it creates and revokes API key
+
+    # Test it creates and revokes API key
     def test_it_creates_and_revokes_api_key(self):
         form = {"create_api_key": "1"}
         self.client.login(username="alice@example.org", password="password")
