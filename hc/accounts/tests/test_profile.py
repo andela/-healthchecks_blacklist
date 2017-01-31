@@ -31,6 +31,7 @@ class ProfileTestCase(BaseTestCase):
         check = Check(name="Test Check", user=self.alice)
         check.save()
         self.alice.profile.send_report()
+        
         # Assert that the email was sent and check email content
         self.assertIn("This is a monthly report sent by healthchecks.io.", \
                       mail.outbox[-1].body)
