@@ -48,6 +48,8 @@ class ProfileTestCase(BaseTestCase):
         self.assertTrue("frank@example.org" in member_emails)
 
         ###Assert that the email was sent and check email content
+        self.assertIn("invites you to their", \
+                      mail.outbox[-1].body)
 
     def test_add_team_member_checks_team_access_allowed_flag(self):
         self.client.login(username="charlie@example.org", password="password")
@@ -111,3 +113,15 @@ class ProfileTestCase(BaseTestCase):
         self.assertNotContains(r, "bobs-tag.svg")
 
     ### Test it creates and revokes API key
+    def test_it_creates_and_revokes_api_key(self):
+        form = {"create_api_key": "1"}
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post("/accounts/profile/", form)
+        m = list(response.context['messages'])
+        self.assertEqual(len(m), 1)
+        self.assertEqual(str(m[0]), 'The API key has been created!')
+        form = {"revoke_api_key": "1"}
+        response = self.client.post("/accounts/profile/", form)
+        m = list(response.context['messages'])
+        self.assertEqual(len(m), 1)
+        self.assertEqual(str(m[0]), 'The API key has been revoked!')
