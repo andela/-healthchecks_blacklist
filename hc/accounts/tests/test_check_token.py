@@ -22,18 +22,20 @@ class CheckTokenTestCase(BaseTestCase):
         self.profile.refresh_from_db()
         self.assertEqual(self.profile.token, "")
 
-    ### Login and test it redirects already logged in
+    # Login and test it redirects already logged in
     def test_login_and_redirects_already_logged_in(self):
-        # res = self.client.post(email="bob@example.org", password="password")
         payload = {"email":"alice@example.org", "password":"password"}
-        res = self.client.post("/accounts/login/", payload, content = "application/json")
-        self.assertRedirects(res, "/checks/")
+        response = self.client.post("/accounts/login/", payload, content = "application/json")
+        # chcek redirection to chceks
+        self.assertRedirects(response, "/checks/")
 
-    ### Login with a bad token and check that it redirects
+    # Login with a bad token and check that it redirects
     def test_login_with_bad_token(self):
         payload = {"email":"alice@example.org", "password":"password"}
+        # bad token
         self.profile.token = 'dcdf'
-        res = self.client.post("/accounts/check_token/alice/rgrn/")
-        self.assertRedirects(res, "/accounts/login/")
+        response = self.client.post("/accounts/check_token/alice/rgrn/")
+        # check redirection to login
+        self.assertRedirects(response, "/accounts/login/")
 
     ### Any other tests?
