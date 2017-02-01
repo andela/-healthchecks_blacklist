@@ -42,9 +42,24 @@ class ListChecksTestCase(BaseTestCase):
         checks = {check["name"]: check for check in doc["checks"]}
         ### Assert the expected length of checks
         self.assertEqual(len(checks), 2)
-        
+
         ### Assert the checks Alice 1 and Alice 2's timeout, grace, ping_url, status,
         ### last_ping, n_pings and pause_url
+        self.assertEqual(checks['Alice 1']['timeout'], 3600)
+        self.assertEqual(checks['Alice 1']['grace'], 900)
+        self.assertEqual(checks['Alice 1']['ping_url'], self.a1.url())
+        self.assertEqual(checks['Alice 1']['status'], self.a1.status)
+        self.assertEqual(checks['Alice 1']['last_ping'], self.a1.last_ping.isoformat())
+        self.assertEqual(checks['Alice 1']['n_pings'], 1)
+        self.assertEqual(checks['Alice 1']['pause_url'], self.a1.to_dict()['pause_url'])
+
+        self.assertEqual(checks['Alice 2']['timeout'], 86400)
+        self.assertEqual(checks['Alice 2']['grace'], 3600)
+        self.assertEqual(checks['Alice 2']['ping_url'], self.a2.url())
+        self.assertEqual(checks['Alice 2']['status'], self.a2.status)
+        self.assertEqual(checks['Alice 2']['last_ping'], self.a2.last_ping.isoformat())
+        self.assertEqual(checks['Alice 2']['n_pings'], 0)
+        self.assertEqual(checks['Alice 2']['pause_url'], self.a2.to_dict()['pause_url'])
 
     def test_it_shows_only_users_checks(self):
         bobs_check = Check(user=self.bob, name="Bob 1")
@@ -57,3 +72,6 @@ class ListChecksTestCase(BaseTestCase):
             self.assertNotEqual(check["name"], "Bob 1")
 
     ### Test that it accepts an api_key in the request
+    def test_accepts_api_key_in_request(self):
+        r = self.client.get("/api/v1/checks/")
+        self.assertEqual(r.json()['error'], 'wrong api_key')
