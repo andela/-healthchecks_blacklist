@@ -6,6 +6,7 @@ from hc.accounts.models import Profile
 class TeamAccessMiddlewareTestCase(TestCase):
 
     def test_it_handles_missing_profile(self):
+        """ Test handling missing profile."""
         profile_count_before = Profile.objects.count()
         user = User(username="ned", email="ned@example.org")
         user.set_password("password")

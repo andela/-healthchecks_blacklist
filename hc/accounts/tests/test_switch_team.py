@@ -5,6 +5,7 @@ from hc.api.models import Check
 class SwitchTeamTestCase(BaseTestCase):
 
     def test_it_switches(self):
+        """ Test switching team."""
         c = Check(user=self.alice, name="This belongs to Alice")
         c.save()
 
@@ -19,6 +20,7 @@ class SwitchTeamTestCase(BaseTestCase):
 
 
     def test_it_checks_team_membership(self):
+        """ Test checking team membership."""
         self.client.login(username="charlie@example.org", password="password")
 
         url = "/accounts/switch_team/%s/" % self.alice.username
@@ -28,6 +30,7 @@ class SwitchTeamTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_it_switches_to_own_team(self):
+        """ Test switching to own team."""
         self.client.login(username="alice@example.org", password="password")
 
         url = "/accounts/switch_team/%s/" % self.alice.username
