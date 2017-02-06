@@ -25,7 +25,7 @@ class SwitchTeamTestCase(BaseTestCase):
         response = self.client.get(url)
         # Assert the expected error code
         # error no access - access forbidden 403
-        assert response.status_code == 403
+        self.assertEqual(response.status_code, 403)
 
     def test_it_switches_to_own_team(self):
         self.client.login(username="alice@example.org", password="password")
@@ -34,6 +34,6 @@ class SwitchTeamTestCase(BaseTestCase):
         response = self.client.get(url, follow=True)
         ### Assert the expected error code
         self.assertRedirects(response, "/checks/")
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
         
         
