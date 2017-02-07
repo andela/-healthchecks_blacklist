@@ -49,12 +49,12 @@ class CreateCheckTestCase(BaseTestCase):
         self.assertEqual(check.grace.total_seconds(), 60)
 
     def test_it_accepts_api_key_in_header(self):
-        payload = json.dumps({"api_key": "abc", "name": "Foo"})
+        payload = json.dumps({"name": "Foo"})
 
         ### Make the post request and get the response
         # r = {'status_code': 201} ### This is just a placeholder variable
-        r = self.client.post(self.URL, payload,
-                             content_type="application/json")
+        r = self.client.post(self.URL, payload, content_type="application/json",
+                             HTTP_X_API_KEY="abc")
 
         self.assertEqual(r.status_code, 201)
 
