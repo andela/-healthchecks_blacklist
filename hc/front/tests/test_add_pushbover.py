@@ -47,4 +47,5 @@ class AddPushoverTestCase(BaseTestCase):
 
         params = "pushover_user_key=a&nonce=n&prio=5"
         r = self.client.get("/integrations/add_pushover/?%s" % params)
-        self.assertEqual(r.status_code, 400) 
+        self.assertEqual(r.status_code, 400)
+        
