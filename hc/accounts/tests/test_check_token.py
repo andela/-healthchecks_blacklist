@@ -12,7 +12,7 @@ class CheckTokenTestCase(BaseTestCase):
 
     def test_it_shows_form(self):
         """ Test response for login"""
-        response = self.client.get("/accounts/check_token/alice/secret-token/")
+        response = self.client.get(reverse("hc-check-token", args =["alice", "secret-token"]))
         self.assertContains(response, "You are about to log in")
 
     def test_it_redirects(self):
@@ -38,8 +38,6 @@ class CheckTokenTestCase(BaseTestCase):
         """ Login with a bad token and check that it redirects """
 
         # test using random token
-        response = self.client.post(reverse("hc-check-token", \
-                                    args = {"username": "alice",\
-                                            "token": "vhjf"}))
+        response = self.client.post(reverse("hc-check-token", args =["alice", "vhjf"]))
         # check redirection to login
         self.assertRedirects(response, "/accounts/login/")
