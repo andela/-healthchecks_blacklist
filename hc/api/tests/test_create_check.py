@@ -88,9 +88,24 @@ class CreateCheckTestCase(BaseTestCase):
                   expected_error="name is not a string")
 
     def test_assignment_of_channels(self):
-        check = Check()
-        self.assertEqual(check.assign_all_channels(), None)
+        channel = Channel(user=self.alice)
+        channel.save()
 
+        response = self.post({
+            "api_key": "abc",
+            "name": "Foo",
+            "tags": "bar,baz",
+            "timeout": 3600,
+            "grace": 60,
+            "channels": "*"
+        })
+
+        check = Check.objects.get(user=self.alice, name="Foo")
+
+        channel_count = check.channel_set.count()
+
+        self.assertGreater(channel_count, 0)
+        
     def test_timeout_too_large(self):
         r = self.post({
             "api_key": "abc",
