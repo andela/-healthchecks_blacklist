@@ -13,6 +13,8 @@ class PauseTestCase(BaseTestCase):
                              HTTP_X_API_KEY="abc")
 
         ### Assert the expected status code and check's status
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.json()['status'], 'paused')
 
     def test_it_validates_ownership(self):
         check = Check(user=self.bob, status="up")
@@ -25,3 +27,5 @@ class PauseTestCase(BaseTestCase):
         self.assertEqual(r.status_code, 400)
 
         ### Test that it only allows post requests
+        g = self.client.get(url, "", HTTP_X_API_KEY="abc")
+        self.assertEqual(g.status_code, 405)
