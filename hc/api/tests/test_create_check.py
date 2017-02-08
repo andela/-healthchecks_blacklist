@@ -61,10 +61,7 @@ class CreateCheckTestCase(BaseTestCase):
     def test_it_handles_missing_request_body(self):
         ### Make the post request with a missing body and get the response
         # r = {'status_code': 400, 'error': "wrong api_key"} ### This is just a placeholder variable
-        payload = json.dumps({})
-        r = self.client.post(self.URL, payload,
-                             content_type="application/json")
-
+        r = self.client.post(self.URL, content_type="application/json")
         self.assertEqual(r.status_code, 400)
         self.assertEqual(r.json()["error"], "wrong api_key")
 
@@ -90,12 +87,10 @@ class CreateCheckTestCase(BaseTestCase):
         self.post({"api_key": "abc", "name": False},
                   expected_error="name is not a string")
 
-    ### Test for the assignment of channels
     def test_assignment_of_channels(self):
         check = Check()
         self.assertEqual(check.assign_all_channels(), None)
 
-    ### Test for the 'timeout is too small' and 'timeout is too large' errors
     def test_timeout_too_large(self):
         r = self.post({
             "api_key": "abc",
