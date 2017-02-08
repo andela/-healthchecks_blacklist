@@ -1,5 +1,7 @@
 # healthchecks
 
+[![Coverage Status](https://coveralls.io/repos/github/andela/-healthchecks_blacklist/badge.svg?branch=master)](https://coveralls.io/github/andela/-healthchecks_blacklist?branch=cmaster)  [![CircleCI](https://circleci.com/gh/andela/-healthchecks_blacklist/tree/master.svg?style=svg)](https://circleci.com/gh/andela/-healthchecks_blacklist/tree/master)
+
 ![Screenshot of Welcome page](/stuff/screenshots/welcome.png?raw=true "Welcome Page")
 
 ![Screenshot of My Checks page](/stuff/screenshots/my_checks.png?raw=true "My Checks Page")
@@ -178,9 +180,9 @@ There are separate Django management commands for each task:
     $ ./manage.py pruneusers
     ```    
 
-When you first try these commands on your data, it is a good idea to 
-test them on a copy of your database, not on the live database right away. 
-In a production setup, you should also have regular, automated database 
+When you first try these commands on your data, it is a good idea to
+test them on a copy of your database, not on the live database right away.
+In a production setup, you should also have regular, automated database
 backups set up.
 
 ## Integrations
