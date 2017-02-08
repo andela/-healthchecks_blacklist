@@ -3,12 +3,13 @@ from django.core import mail
 from hc.test import BaseTestCase
 from hc.accounts.models import Member
 from hc.api.models import Check
+from django.urls import reverse
 
 
 class ProfileTestCase(BaseTestCase):
 
     def test_it_sends_set_password_link(self):
-        """ Test sending set password link""" 
+        """ Test sending set password link"""
         self.client.login(username="alice@example.org", password="password")
 
         form = {"set_password": "1"}
@@ -24,8 +25,8 @@ class ProfileTestCase(BaseTestCase):
         ### Assert that the email was sent and check email content
         self.assertIn("Here's a link to set a password for your account on healthchecks.io:",
                       mail.outbox[-1].body)
-        self.assertRedirects(response, "/accounts/set_password_link_sent/")
 
+        self.assertRedirects(response, reverse("hc-set-password-link-sent"))
 
     def test_it_sends_report(self):
         """ Test sending email reports"""

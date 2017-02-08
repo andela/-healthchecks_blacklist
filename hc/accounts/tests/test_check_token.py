@@ -1,6 +1,7 @@
+from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from hc.test import BaseTestCase
-
+from django.urls import reverse
 
 class CheckTokenTestCase(BaseTestCase):
 
@@ -11,7 +12,7 @@ class CheckTokenTestCase(BaseTestCase):
 
     def test_it_shows_form(self):
         """ Test response for login"""
-        response = self.client.get("/accounts/check_token/alice/secret-token/")
+        response = self.client.get(reverse("hc-check-token", args =["alice", "secret-token"]))
         self.assertContains(response, "You are about to log in")
 
     def test_it_redirects(self):
@@ -28,6 +29,7 @@ class CheckTokenTestCase(BaseTestCase):
     def test_login_and_redirects_already_logged_in(self):
         """ Login and test it redirects already logged in"""
         payload = {"email":"alice@example.org", "password":"password"}
+
         response = self.client.post(
             "/accounts/login/", payload, content="application/json")
         # check redirection to chceks
@@ -37,6 +39,7 @@ class CheckTokenTestCase(BaseTestCase):
         """ Login with a bad token and check that it redirects """
 
         # test using random token
-        response = self.client.post("/accounts/check_token/alice/rgrn/")
+        response = self.client.post(reverse("hc-check-token", args =["alice", "vhjf"]))
+
         # check redirection to login
         self.assertRedirects(response, "/accounts/login/")
