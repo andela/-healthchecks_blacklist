@@ -39,9 +39,9 @@ class AddChannelTestCase(BaseTestCase):
             self.assertContains(r, "Integration Settings", status_code=200)
 
     def test_team_access_works(self):
-        self.test_channel = Channel(user=self.alice, kind="email")
-        self.test_channel.save()
-        alice_url = reverse("hc-channel-checks", args=[self.test_channel.code])
+        test_channel = Channel(user=self.alice, kind="email")
+        test_channel.save()
+        alice_url = reverse("hc-channel-checks", args=[test_channel.code])
         #login Bob who is in alice's team
         self.client.login(username="bob@example.org", password="password")
         results = self.client.get(alice_url)
