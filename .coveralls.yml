@@ -1,6 +1,4 @@
-coverage run --source=hc setup.py test
-
-repo_token:ez5UhnwU1SRUFs5IPjuxBJn53PUxdfJ3u
+repo_token: ez5UhnwU1SRUFs5IPjuxBJn53PUxdfJ3u
 
 notify:
   webhooks:

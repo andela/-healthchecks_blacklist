@@ -3,6 +3,9 @@ coverage==4.0.3
 cssselect==1.0.1
 cssutils==1.0.1
 dj-database-url==0.4.2
+coverage==4.0.3
+cssselect==1.0.1
+cssutils==1.0.1
 Django==1.10
 django-appconf==1.0.1
 django-compressor==2.1
@@ -21,3 +24,5 @@ rjsmin==1.0.12
 six==1.10.0
 whitenoise==3.2.3
 psycopg2==2.6.1
+python-coveralls==2.9.0
+coveralls==1.1
