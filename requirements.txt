@@ -2,6 +2,7 @@ boto==2.45.0
 coverage==4.0.3
 cssselect==1.0.1
 cssutils==1.0.1
+dj-database-url==0.4.2
 Django==1.10
 django-appconf==1.0.1
 django-compressor==2.1
@@ -12,6 +13,7 @@ futures==3.0.3
 lxml==3.7.2
 mock==2.0.0
 pbr==1.10.0
+gunicorn==19.6.0
 premailer==2.9.6
 rcssmin==1.0.6
 requests==2.9.1
@@ -19,5 +21,3 @@ rjsmin==1.0.12
 six==1.10.0
 whitenoise==3.2.3
 psycopg2==2.6.1
-dj-database-url==0.4.2
-gunicorn==19.6.0
