@@ -19,9 +19,7 @@ class Profile(models.Model):
     team_name = models.CharField(max_length=200, blank=True)
     team_access_allowed = models.BooleanField(default=False)
     next_report_date = models.DateTimeField(null=True, blank=True)
-    daily_reports_allowed = models.BooleanField(default=False)
-    weekly_reports_allowed = models.BooleanField(default=False)
-    monthly_reports_allowed = models.BooleanField(default=False)
+    reports_allowed = models.CharField(max_length=1, default='0')
     ping_log_limit = models.IntegerField(default=100)
     token = models.CharField(max_length=128, blank=True)
     api_key = models.CharField(max_length=128, blank=True)
@@ -58,19 +56,17 @@ class Profile(models.Model):
     def send_report(self):
         # reset next report date first:
         now = timezone.now()
-        if self.daily_reports_allowed:
+        if self.reports_allowed == '1':
             self.next_report_date = now + timedelta(minutes=1)
-            self.save()
-            report_type = "Daily"
-        elif self.weekly_reports_allowed:
+            report_period = "Daily"
+        elif self.reports_allowed == '2':
             self.next_report_date = now + timedelta(days=7)
-            self.save()
-            report_type = "Weekly"
-        elif self.monthly_reports_allowed:
+            report_period = "Weekly"
+        elif self.reports_allowed == '3':
             self.next_report_date = now + timedelta(days=30)
-            self.save()
-            report_type = "Monthly"
+            report_period = "Monthly"
 
+        self.save()
         token = signing.Signer().sign(uuid.uuid4())
         path = reverse("hc-unsubscribe-reports", args=[self.user.username])
         unsub_link = "%s%s?token=%s" % (settings.SITE_ROOT, path, token)
@@ -79,7 +75,7 @@ class Profile(models.Model):
             "checks": self.user.check_set.order_by("created"),
             "now": now,
             "unsub_link": unsub_link,
-            "type": report_type
+            "report_period": report_period
         }
 
         emails.report(self.user.email, ctx)

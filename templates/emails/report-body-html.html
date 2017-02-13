@@ -4,7 +4,7 @@
 {% block content %}
 
 <h1>Hello,</h1>
-<p>This is a {{ type }} report sent by <a href="https://healthchecks.io">healthchecks.io</a>.</p>
+<p>This is a {{ report_period }} report sent by <a href="https://healthchecks.io">healthchecks.io</a>.</p>
 
 {% include "emails/summary-html.html" %}
 
@@ -19,5 +19,5 @@ Get the ball rolling by adding one more!</p>
 
 {% block unsub %}
 <br />
-<a href="{{ unsub_link }}">Unsubscribe from future {{ type }} reports</a>
+<a href="{{ unsub_link }}">Unsubscribe from future {{ report_period }} reports</a>
 {% endblock %}

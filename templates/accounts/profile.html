@@ -29,8 +29,8 @@
                         <input
                             name="reports_allowed"
                             type="radio"
-                            value="daily_reports"
-                            {% if profile.daily_reports_allowed %} checked {% endif %}>
+                            value="1"
+                            {% if profile.reports_allowed == '1' %} checked {% endif %}>
                         Each day send me a summary of my checks
                     </label>
                     <h2>Weekly Reports </h2>
@@ -38,8 +38,8 @@
                         <input
                             name="reports_allowed"
                             type="radio"
-                            value="weekly_reports"
-                            {% if profile.weekly_reports_allowed %} checked {% endif %}>
+                            value="2"
+                            {% if profile.reports_allowed == '2' %} checked {% endif %}>
                         Each week send me a summary of my checks
                     </label>
                     <h2>Monthly Reports</h2>
@@ -47,8 +47,8 @@
                         <input
                             name="reports_allowed"
                             type="radio"
-                            value="monthly_reports"
-                            {% if profile.monthly_reports_allowed %} checked {% endif %}>
+                            value="3"
+                            {% if profile.reports_allowed  == '3'%} checked {% endif %}>
                         Each month send me a summary of my checks
                     </label>
                     <button
