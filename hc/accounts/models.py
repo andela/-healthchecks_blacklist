@@ -55,6 +55,7 @@ class Profile(models.Model):
 
     def send_report(self):
         # reset next report date first:
+        report_period = ''
         now = timezone.now()
         if self.reports_allowed == '1':
             self.next_report_date = now + timedelta(minutes=1)
