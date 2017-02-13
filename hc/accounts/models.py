@@ -19,7 +19,9 @@ class Profile(models.Model):
     team_name = models.CharField(max_length=200, blank=True)
     team_access_allowed = models.BooleanField(default=False)
     next_report_date = models.DateTimeField(null=True, blank=True)
-    reports_allowed = models.BooleanField(default=True)
+    daily_reports_allowed = models.BooleanField(default=False)
+    weekly_reports_allowed = models.BooleanField(default=False)
+    monthly_reports_allowed = models.BooleanField(default=False)
     ping_log_limit = models.IntegerField(default=100)
     token = models.CharField(max_length=128, blank=True)
     api_key = models.CharField(max_length=128, blank=True)
@@ -56,8 +58,18 @@ class Profile(models.Model):
     def send_report(self):
         # reset next report date first:
         now = timezone.now()
-        self.next_report_date = now + timedelta(days=30)
-        self.save()
+        if self.daily_reports_allowed:
+            self.next_report_date = now + timedelta(minutes=1)
+            self.save()
+            report_type = "Daily"
+        elif self.weekly_reports_allowed:
+            self.next_report_date = now + timedelta(days=7)
+            self.save()
+            report_type = "Weekly"
+        elif self.monthly_reports_allowed:
+            self.next_report_date = now + timedelta(days=30)
+            self.save()
+            report_type = "Monthly"
 
         token = signing.Signer().sign(uuid.uuid4())
         path = reverse("hc-unsubscribe-reports", args=[self.user.username])
@@ -66,7 +78,8 @@ class Profile(models.Model):
         ctx = {
             "checks": self.user.check_set.order_by("created"),
             "now": now,
-            "unsub_link": unsub_link
+            "unsub_link": unsub_link,
+            "type": report_type
         }
 
         emails.report(self.user.email, ctx)

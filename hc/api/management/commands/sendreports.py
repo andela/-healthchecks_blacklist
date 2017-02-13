@@ -29,26 +29,48 @@ class Command(BaseCommand):
 
     def handle_one_run(self):
         now = timezone.now()
+        day_before = now - timedelta(minutes=1)
+        week_before = now - timedelta(days=7)
         month_before = now - timedelta(days=30)
 
         report_due = Q(next_report_date__lt=now)
         report_not_scheduled = Q(next_report_date__isnull=True)
+        sent = 0
+
+        import pdb; pdb.set_trace()
+
+        q1 = Profile.objects.filter(report_due | report_not_scheduled)
+        q2 = q1.filter(daily_reports_allowed=True)
+        q3 = q2.filter(user__date_joined__lt=day_before)
+        for profile in q3:
+            if num_pinged_checks(profile) > 0:
+                self.stdout.write(self.tmpl % profile.user.email)
+                profile.send_report()
+                sent += 1
 
         q = Profile.objects.filter(report_due | report_not_scheduled)
-        q = q.filter(reports_allowed=True)
-        q = q.filter(user__date_joined__lt=month_before)
-        sent = 0
+        q = q.filter(weekly_reports_allowed=True)
+        q = q.filter(user__date_joined__lt=week_before)
         for profile in q:
             if num_pinged_checks(profile) > 0:
                 self.stdout.write(self.tmpl % profile.user.email)
                 profile.send_report()
                 sent += 1
 
-        return sent
+        q = Profile.objects.filter(report_due | report_not_scheduled)
+        q = q.filter(monthly_reports_allowed=True)
+        q = q.filter(user__date_joined__lt=month_before)
+        for profile in q:
+            if num_pinged_checks(profile) > 0:
+                self.stdout.write(self.tmpl % profile.user.email)
+                profile.send_report()
+                sent += 1
+
+        return q1
 
     def handle(self, *args, **options):
         if not options["loop"]:
-            return "Sent %d reports" % self.handle_one_run()
+            return "Sent %s reports" % self.handle_one_run()
 
         self.stdout.write("sendreports is now running")
         while True:
