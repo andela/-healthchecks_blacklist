@@ -35,8 +35,8 @@ class ProfileTestCase(BaseTestCase):
         self.alice.profile.send_report()
 
         # Assert that the email was sent and check email content
-        self.assertIn("This is a monthly report sent by healthchecks.io.", \
-                      mail.outbox[-1].body)
+        self.assertIn("Healthchecks Report", \
+                      mail.outbox[-1].subject)
 
 
     def test_it_adds_team_member(self):
@@ -89,6 +89,7 @@ class ProfileTestCase(BaseTestCase):
 
         self.alice.profile.refresh_from_db()
         self.assertEqual(self.alice.profile.team_name, "Alpha Team")
+
 
     def test_set_team_name_checks_team_access_allowed_flag(self):
         """ Test check access allowed."""
