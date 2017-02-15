@@ -28,8 +28,8 @@ def ping(request, code):
 
     check.save()
     check.refresh_from_db()
-    if check.nag != None:
-        check.nag_after = check.alert_after + check.nag
+    if check.nag is not None:
+        check.nag_after = check.nag_after + check.nag
         check.save()
 
     ping = Ping(owner=check)
@@ -65,6 +65,8 @@ def checks(request):
             check.timeout = td(seconds=request.json["timeout"])
         if "grace" in request.json:
             check.grace = td(seconds=request.json["grace"])
+        if "nag" in request.json:
+            check.nag = td(seconds=request.json["nag"])
 
         check.save()
 

@@ -3,7 +3,7 @@
 import hashlib
 import json
 import uuid
-from datetime import timedelta as td
+from datetime import timedelta as td, datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -54,7 +54,7 @@ class Check(models.Model):
     alert_after = models.DateTimeField(null=True, blank=True, editable=False)
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
     nag = models.DurationField(default=DEFAULT_NAG)
-    nag_after = models.DateTimeField(null=True, blank=True)
+    nag_after = models.DateTimeField(default=datetime.now(), blank=True)
 
 
     def name_then_code(self):
