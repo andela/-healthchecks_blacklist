@@ -3,10 +3,9 @@
 import hashlib
 import json
 import uuid
-from datetime import timedelta as td, datetime
+from datetime import timedelta as td
 
 from django.conf import settings
-from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
@@ -54,8 +53,8 @@ class Check(models.Model):
     last_ping = models.DateTimeField(null=True, blank=True)
     alert_after = models.DateTimeField(null=True, blank=True, editable=False)
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
-    nag = models.DurationField(default=DEFAULT_NAG)
-    nag_after = models.DateTimeField(default=timezone.now, blank=True)
+    nag = models.DurationField(null = True)
+    nag_after = models.DateTimeField(null=True , blank=True)
 
 
     def name_then_code(self):
@@ -120,9 +119,8 @@ class Check(models.Model):
             "ping_url": self.url(),
             "pause_url": settings.SITE_ROOT + pause_rel_url,
             "tags": self.tags,
-            "timeout": int(self.timeout.total_seconds()),
-            "grace": int(self.grace.total_seconds()),
-            "nag": int(self.nag.total_seconds()),
+            "timeout": self.timeout.total_seconds(),
+            "grace": self.grace.total_seconds(),
             "n_pings": self.n_pings,
             "status": self.get_status()
         }
