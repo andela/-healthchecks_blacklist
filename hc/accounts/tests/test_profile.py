@@ -25,8 +25,8 @@ class ProfileTestCase(BaseTestCase):
         ### Assert that the email was sent and check email content
         self.assertIn("Here's a link to set a password for your account on healthchecks.io:",
                       mail.outbox[-1].body)
-        self.assertRedirects(response, reverse("hc-set-password-link-sent"))
 
+        self.assertRedirects(response, reverse("hc-set-password-link-sent"))
 
     def test_it_sends_report(self):
         """ Test sending email reports"""
