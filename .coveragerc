@@ -1,0 +1,14 @@
+[run]
+omit = 
+    */migrations/*
+    */site-packages/*
+    settings.py
+    local_settings.py
+
+[report]
+omit = 
+    */tests/*
+    */migrations/*
+    */site-packages/*
+    settings.py
+    local_settings.py
