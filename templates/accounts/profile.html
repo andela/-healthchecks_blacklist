@@ -24,32 +24,38 @@
             <div class="panel-body settings-block">
                 <form method="post">
                     {% csrf_token %}
-                    <h2>Daily Reports</h2>
+                    <h2>Select time period for status reports</h2>
                     <label>
                         <input
                             name="reports_allowed"
                             type="radio"
-                            value="1"
-                            {% if profile.reports_allowed == '1' %} checked {% endif %}>
+                            value='1'
+                            {% if profile.reports_allowed == 1 %} checked {% endif %}>
                         Each day send me a summary of my checks
                     </label>
-                    <h2>Weekly Reports </h2>
                     <label>
                         <input
                             name="reports_allowed"
                             type="radio"
-                            value="2"
-                            {% if profile.reports_allowed == '2' %} checked {% endif %}>
+                            value='2'
+                            {% if profile.reports_allowed == 2 %} checked {% endif %}>
                         Each week send me a summary of my checks
                     </label>
-                    <h2>Monthly Reports</h2>
                     <label>
                         <input
                             name="reports_allowed"
                             type="radio"
-                            value="3"
-                            {% if profile.reports_allowed  == '3'%} checked {% endif %}>
+                            value='3'
+                            {% if profile.reports_allowed  == 3 %} checked {% endif %}>
                         Each month send me a summary of my checks
+                    </label>
+                    <label>
+                        <input
+                            name="reports_allowed"
+                            type="radio"
+                            value='0'
+                            {% if profile.reports_allowed  == 0 %} checked {% endif %}>
+                        I do not want to receive status reports
                     </label>
                     <button
                         name="update_reports_allowed"

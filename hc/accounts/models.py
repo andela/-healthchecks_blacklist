@@ -19,7 +19,7 @@ class Profile(models.Model):
     team_name = models.CharField(max_length=200, blank=True)
     team_access_allowed = models.BooleanField(default=False)
     next_report_date = models.DateTimeField(null=True, blank=True)
-    reports_allowed = models.CharField(max_length=1, default='0')
+    reports_allowed = models.IntegerField(default=0)
     ping_log_limit = models.IntegerField(default=100)
     token = models.CharField(max_length=128, blank=True)
     api_key = models.CharField(max_length=128, blank=True)
@@ -57,29 +57,31 @@ class Profile(models.Model):
         # reset next report date first:
         report_period = ''
         now = timezone.now()
-        if self.reports_allowed == '1':
+        if self.reports_allowed == 1:
             self.next_report_date = now + timedelta(days=1)
             report_period = "Daily"
-        elif self.reports_allowed == '2':
+        elif self.reports_allowed == 2:
             self.next_report_date = now + timedelta(days=7)
             report_period = "Weekly"
-        elif self.reports_allowed == '3':
+        elif self.reports_allowed == 3:
             self.next_report_date = now + timedelta(days=30)
             report_period = "Monthly"
 
         self.save()
-        token = signing.Signer().sign(uuid.uuid4())
-        path = reverse("hc-unsubscribe-reports", args=[self.user.username])
-        unsub_link = "%s%s?token=%s" % (settings.SITE_ROOT, path, token)
 
-        ctx = {
-            "checks": self.user.check_set.order_by("created"),
-            "now": now,
-            "unsub_link": unsub_link,
-            "report_period": report_period
-        }
+        if self.reports_allowed:
+            token = signing.Signer().sign(uuid.uuid4())
+            path = reverse("hc-unsubscribe-reports", args=[self.user.username])
+            unsub_link = "%s%s?token=%s" % (settings.SITE_ROOT, path, token)
 
-        emails.report(self.user.email, ctx)
+            ctx = {
+                "checks": self.user.check_set.order_by("created"),
+                "now": now,
+                "unsub_link": unsub_link,
+                "report_period": report_period
+            }
+
+            emails.report(self.user.email, ctx)
 
     def invite(self, user):
         member = Member(team=self, user=user)
@@ -96,4 +98,3 @@ class Profile(models.Model):
 class Member(models.Model):
     team = models.ForeignKey(Profile)
     user = models.ForeignKey(User)
-    
