@@ -19,25 +19,47 @@ class ProfileTestCase(BaseTestCase):
         # profile.token should be set now
         self.alice.profile.refresh_from_db()
         token = self.alice.profile.token
-        ### Assert that the token is set
+        # Assert that the token is set
         self.assertNotEqual(token, None)
 
-        ### Assert that the email was sent and check email content
+        # Assert that the email was sent and check email content
         self.assertIn("Here's a link to set a password for your account on healthchecks.io:",
                       mail.outbox[-1].body)
         self.assertRedirects(response, reverse("hc-set-password-link-sent"))
 
-
-    def test_it_sends_report(self):
+    def test_it_sends_daily_report(self):
         """ Test sending email reports"""
         check = Check(name="Test Check", user=self.alice)
         check.save()
+        self.alice.profile.reports_allowed = 1
+        self.alice.profile.save()
         self.alice.profile.send_report()
 
         # Assert that the email was sent and check email content
-        self.assertIn("Healthchecks Report", \
-                      mail.outbox[-1].subject)
+        self.assertIn("This is a Daily report sent by healthchecks.io",
+                      mail.outbox[-1].body)
 
+    def test_it_sends_weekly_report(self):
+        """ Test sending email reports"""
+        check = Check(name="Test Check", user=self.alice)
+        check.save()
+        self.alice.profile.reports_allowed = 2
+        self.alice.profile.send_report()
+
+        # Assert that the email was sent and check email content
+        self.assertIn("This is a Weekly report sent by healthchecks.io",
+                      mail.outbox[-1].body)
+
+    def test_it_sends_monthly_report(self):
+        """ Test sending email reports"""
+        check = Check(name="Test Check", user=self.alice)
+        check.save()
+        self.alice.profile.reports_allowed = 3
+        self.alice.profile.send_report()
+
+        # Assert that the email was sent and check email content
+        self.assertIn("This is a Monthly report sent by healthchecks.io",
+                      mail.outbox[-1].body)
 
     def test_it_adds_team_member(self):
         """ Test adding new team member."""
@@ -55,7 +77,7 @@ class ProfileTestCase(BaseTestCase):
         self.assertTrue("frank@example.org" in member_emails)
 
         # Assert that the email was sent and check email content
-        self.assertIn("invites you to their", \
+        self.assertIn("invites you to their",
                       mail.outbox[-1].body)
 
     def test_add_team_member_checks_team_access_allowed_flag(self):
@@ -89,7 +111,6 @@ class ProfileTestCase(BaseTestCase):
 
         self.alice.profile.refresh_from_db()
         self.assertEqual(self.alice.profile.team_name, "Alpha Team")
-
 
     def test_set_team_name_checks_team_access_allowed_flag(self):
         """ Test check access allowed."""
@@ -125,7 +146,6 @@ class ProfileTestCase(BaseTestCase):
 
         # Expect only Alice's tags
         self.assertNotContains(response, "bobs-tag.svg")
-
 
     def test_it_creates_and_revokes_api_key(self):
         """Test it creates and revokes API key"""
