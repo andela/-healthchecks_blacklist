@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'compressor',
     'djmail',
+    'django_nose',
 
     'hc.accounts',
     'hc.api',
@@ -78,8 +79,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hc.wsgi.application'
-TEST_RUNNER = 'hc.api.tests.CustomRunner'
+# TEST_RUNNER = 'hc.api.tests.CustomRunner'
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=hc',
+]
 
 # Default database engine is SQLite. So one can just check out code,
 # install requirements.txt and do manage.py runserver and it works
