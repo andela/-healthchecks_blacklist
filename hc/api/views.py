@@ -28,9 +28,6 @@ def ping(request, code):
 
     check.save()
     check.refresh_from_db()
-    if check.nag != None:
-        check.nag_after = check.alert_after + check.nag
-        check.save()
 
     ping = Ping(owner=check)
     headers = request.META
