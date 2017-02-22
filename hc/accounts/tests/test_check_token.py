@@ -28,7 +28,8 @@ class CheckTokenTestCase(BaseTestCase):
 
     def test_login_and_redirects_already_logged_in(self):
         """ Login and test it redirects already logged in"""
-        payload = {"email":"alice@example.org", "password": "password"}
+        payload = {"email":"alice@example.org", "password":"password"}
+
         response = self.client.post(
             "/accounts/login/", payload, content="application/json")
         # check redirection to chceks
@@ -39,5 +40,6 @@ class CheckTokenTestCase(BaseTestCase):
 
         # test using random token
         response = self.client.post(reverse("hc-check-token", args =["alice", "vhjf"]))
+
         # check redirection to login
         self.assertRedirects(response, "/accounts/login/")
