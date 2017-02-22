@@ -28,7 +28,7 @@ def ping(request, code):
 
     check.save()
     check.refresh_from_db()
-    if check.nag != None:
+    if check.nag is not None:
         check.nag_after = check.alert_after + check.nag
         check.save()
 
