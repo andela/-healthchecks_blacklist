@@ -10,7 +10,5 @@ dependencies:
 test:
   pre:
     - ./manage.py collectstatic --no-input
-  override:
-    - coverage run --omit=*/tests/* --source=hc ./manage.py test --no-input
   post:
     - coveralls

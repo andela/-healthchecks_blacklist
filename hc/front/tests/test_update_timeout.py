@@ -11,19 +11,19 @@ class UpdateTimeoutTestCase(BaseTestCase):
 
     def test_it_works(self):
         url = "/checks/%s/timeout/" % self.check.code
-        payload = {"timeout": 3600, "grace": 60}
+        payload = {"timeout": 3600, "grace": 60, "nag": 60}
 
         self.client.login(username="alice@example.org", password="password")
         r = self.client.post(url, data=payload)
         self.assertRedirects(r, "/checks/")
-
         check = Check.objects.get(code=self.check.code)
-        assert check.timeout.total_seconds() == 3600
-        assert check.grace.total_seconds() == 60
+        assert check.timeout.total_seconds()== 3600
+        assert check.grace.total_seconds()== 60
+        assert check.nag.total_seconds()== 60
 
     def test_team_access_works(self):
         url = "/checks/%s/timeout/" % self.check.code
-        payload = {"timeout": 7200, "grace": 60}
+        payload = {"timeout": 7200, "grace": 60, "nag": 60}
 
         # Logging in as bob, not alice. Bob has team access so this
         # should work.

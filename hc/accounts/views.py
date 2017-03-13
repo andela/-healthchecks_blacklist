@@ -156,7 +156,15 @@ def profile(request):
         elif "update_reports_allowed" in request.POST:
             form = ReportSettingsForm(request.POST)
             if form.is_valid():
-                profile.reports_allowed = form.cleaned_data["reports_allowed"]
+                if request.POST.get("reports_allowed") == '1':
+                    profile.reports_allowed = 1
+                elif request.POST.get("reports_allowed") == '2':
+                    profile.reports_allowed = 2
+                elif request.POST.get("reports_allowed") == '3':
+                    profile.reports_allowed = 3
+                elif request.POST.get("reports_allowed") == '0':
+                    profile.reports_allowed = 0
+
                 profile.save()
                 messages.success(request, "Your settings have been updated!")
         elif "invite_team_member" in request.POST:
